@@ -83,7 +83,6 @@ def process_files(shared_data):
             "invoice_type": "3",
             "invoice_date": invoice_date,
             "due_date": due_date,
-            "contract_number": contract_number,
             "payment_code": shared_data["sifra_placanja"],
             "credit_model": "",
             "credit_reference_number": invoice_number,
@@ -102,6 +101,7 @@ def process_files(shared_data):
         ET.SubElement(item, "expected_payment_date").text = shared_data["datum_ocekivanog_placanja"]
         ET.SubElement(item, "urgent_payment").text = "false"
         ET.SubElement(item, "posting_account").text = "252111"
+        ET.SubElement(item, "recording_account").text = shared_data["evidencioni_racun"]
 
     # Snimanje SPIRI XML fajla
     output_file = filedialog.asksaveasfilename(
@@ -156,13 +156,17 @@ def start_gui():
     funkcija = ttk.Entry(frame, width=30)
     funkcija.grid(row=6, column=1, pady=10, sticky="w")
 
+    ttk.Label(frame, text="Evidencioni račun:").grid(row=7, column=0, pady=10, sticky="e")
+    evidencioni_racun = ttk.Entry(frame, width=30)
+    evidencioni_racun.grid(row=7, column=1, pady=10, sticky="w")
+
     # Checkbox za kreiranje zahteva za plaćanje
     kreirati_zahtev = BooleanVar(value=True)
     ttk.Checkbutton(
         frame,
         text="Kreirati zahtev za plaćanje",
         variable=kreirati_zahtev
-    ).grid(row=7, columnspan=2, pady=10)
+    ).grid(row=8, columnspan=2, pady=10)
 
     def submit_and_process():
         shared_data["jbkjs"] = broj_budzetskog_korisnika.get()
@@ -172,10 +176,11 @@ def start_gui():
         shared_data["projekat_kod"] = projekat_kod.get()
         shared_data["izvor_finansiranja"] = izvor_finansiranja.get()
         shared_data["funkcija"] = funkcija.get()
+        shared_data["evidencioni_racun"] = evidencioni_racun.get()
         shared_data["kreirati_zahtev"] = kreirati_zahtev.get()
         process_files(shared_data)
 
-    ttk.Button(frame, text="Generiši XML", command=submit_and_process).grid(row=8, columnspan=3, pady=20)
+    ttk.Button(frame, text="Generiši XML", command=submit_and_process).grid(row=9, columnspan=3, pady=20)
 
     root.mainloop()
 
