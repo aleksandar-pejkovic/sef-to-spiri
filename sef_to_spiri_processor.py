@@ -84,7 +84,6 @@ def process_files(shared_data):
             "invoice_date": invoice_date,
             "due_date": due_date,
             "payment_code": shared_data["sifra_placanja"],
-            "credit_model": "",
             "credit_reference_number": invoice_number,
             "payment_basis": f"Уплата по фактури број {invoice_number}"
         })
